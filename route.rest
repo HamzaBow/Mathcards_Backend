@@ -1,0 +1,25 @@
+GET http://localhost:3000/users
+
+###
+
+GET http://localhost:3000/users/11
+
+###
+
+POST http://localhost:3000/users
+content-type: application/json
+
+{
+  "name": "New User 1",
+  "following": ["userId2", "userId3"]
+}
+
+###
+
+POST http://localhost:3000/users
+content-type: application/json
+
+{
+  "name": "New User 2",
+  "following": ["userId3", "userId4"]
+}
