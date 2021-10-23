@@ -6,6 +6,9 @@ GET http://localhost:3000/users/11
 
 ###
 
+GET http://localhost:3000/users/613c70e3171f8f2ca01a6eaf
+
+###
 POST http://localhost:3000/users
 content-type: application/json
 
