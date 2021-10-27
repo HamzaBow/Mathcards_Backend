@@ -18,7 +18,19 @@ router.get('/:id', (req, res) => {
 }) 
 
 // Creating One
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
+  const card = new Card({
+    front: req.body.front,
+    back: req.body.back,
+    difficultyLevels: req.body.difficultyLevels,
+    tags: req.body.tags,
+  })
+  try {
+    const newCard = await card.save()
+    res.status(201).json(newCard)
+  } catch (error) {
+    res.status(400).json({ messge: error.message })
+  }
 }) 
 
 // Updating One
