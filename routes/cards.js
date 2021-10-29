@@ -33,9 +33,41 @@ router.post('/', async (req, res) => {
   }
 }) 
 
-// Updating One
-router.patch('/:id', (req, res) => {
-  
+// Updating one with PUT
+router.put('/:id', getCard, async (req, res) => {
+  res.card.front = req.body.front
+  res.card.back = req.body.back
+  res.card.difficultyLevels = req.body.difficultyLevels
+  res.card.tags = req.body.tags
+  try {
+    const updatedCard = await res.card.save()
+    res.json(updatedCard)
+  } catch (error) {
+    res.status(400).json({ message: error.message})
+  }
+})
+
+// Updating one with PATCH
+router.patch('/:id', getCard, async (req, res) => {
+  if (req.body.front != null) {
+    res.card.front = req.body.front
+  }
+  if (req.body.back != null) {
+    res.card.back = req.body.back
+  }
+  if (req.body.difficultyLevels != null) {
+    res.card.difficultyLevels = req.body.difficultyLevels
+  }
+  if (req.body.tags != null) {
+    res.card.tags = req.body.tags
+  }
+
+  try {
+    const updatedCard = await res.card.save()
+    res.json(updatedCard)
+  } catch (error) {
+    res.status(400).json({ message: error.message})
+  }
 }) 
 
 // Deleting One
