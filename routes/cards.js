@@ -29,7 +29,7 @@ router.post('/', async (req, res) => {
     const newCard = await card.save()
     res.status(201).json(newCard)
   } catch (error) {
-    res.status(400).json({ messge: error.message })
+    res.status(400).json({ message: error.message })
   }
 }) 
 
@@ -44,7 +44,7 @@ router.delete('/:id', (req, res) => {
 }) 
 
 
-async function getUser(req, res, next) {
+async function getCard(req, res, next) {
   let card
   try {
     card = await Card.findById(req.params.id)
