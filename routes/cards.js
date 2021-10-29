@@ -39,8 +39,13 @@ router.patch('/:id', (req, res) => {
 }) 
 
 // Deleting One
-router.delete('/:id', (req, res) => {
-  
+router.delete('/:id', getCard, async (req, res) => {
+  try {
+    await res.card.remove()
+    res.json({ message: 'Deleted card'})
+  } catch (error) {
+    res.status(500).json({ message: error.message})
+  }
 }) 
 
 
