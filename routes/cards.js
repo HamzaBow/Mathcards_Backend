@@ -43,4 +43,20 @@ router.delete('/:id', (req, res) => {
   
 }) 
 
+
+async function getUser(req, res, next) {
+  let card
+  try {
+    card = await Card.findById(req.params.id)
+    if(card == null) {
+      return res.status(404).json({ message: "Cannot find card"})
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message})
+  }
+
+  res.card = card
+  next()
+}
+
 module.exports = router
