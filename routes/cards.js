@@ -13,8 +13,8 @@ router.get('/', async (req, res) => {
 }) 
 
 // Getting One
-router.get('/:id', (req, res) => {
-  
+router.get('/:id', getCard, (req, res) => {
+  res.send(res.card)
 }) 
 
 // Creating One
