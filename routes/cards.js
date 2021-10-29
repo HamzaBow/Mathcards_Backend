@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     const cards = await Card.find();
     res.json(cards)
   } catch (error) {
-    
+    res.status(500).json({ error: error})
   }
 }) 
 
