@@ -28,6 +28,9 @@ app.use('/cards', cardsRouter)
 
 const usersRouter = require('./routes/users')
 app.use('/users', usersRouter)
+
+const collectionsRouter = require('./routes/collections')
+app.use('/collections', collectionsRouter)
 // ***********************************************
 
 app.listen(3001,  () => console.log('Server Started'))
