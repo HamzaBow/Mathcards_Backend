@@ -89,8 +89,8 @@ router.post('/:id/cards', getCollection, async (req, res) => {
   try {
     if(res.collection.cardsIds.indexOf(req.body.cardId) === - 1){
       res.collection.cardsIds.push(req.body.cardId)
-      res.collection.save()
-      res.status(201).json('Card added to collection successfully')
+      const collection = await res.collection.save()
+      res.status(201).json({ message: 'Card added to collection successfully', collection})
     } else {
       res.status(409).json('card already exists in collection')
     }
@@ -104,8 +104,11 @@ router.delete('/:id/cards', getCollection, async (req, res) => {
   try {
     if(res.collection.cardsIds.indexOf(req.body.cardId) !== - 1){
       res.collection.cardsIds = res.collection.cardsIds.filter((id) => id !== req.body.cardId)
-      res.collection.save()
-      res.json('Card deleted from collection successfully')
+      const collection = await res.collection.save()
+      res.json({
+        mesage: "Card deleted from collection successfully",
+        collection,
+      });
     } else {
       res.status(404).json('card does not exist in collection')
     }
