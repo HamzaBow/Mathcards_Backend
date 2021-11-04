@@ -86,12 +86,15 @@ router.delete('/:id', getUser, async (req, res) => {
 
 router.post('/:id/following', getUser, async (req, res) => {
   try {
-    if(res.user.following.indexOf(req.body.followedId) === - 1){
-      res.user.following.push(req.body.followedId)
-      res.user.save()
-      res.status(201).json('follower added to user successfully')
+    if (res.user.following.indexOf(req.body.followedId) === -1) {
+      res.user.following.push(req.body.followedId);
+      const user = await res.user.save();
+      res.status(201).json({
+        message: "followed added to user successfully",
+        user: user,
+      });
     } else {
-      res.status(409).json('follower already exists for this user')
+      res.status(409).json("followed already exists for this user");
     }
   } catch (error) {
     res.status(500).json({ message: error.message})
@@ -103,10 +106,10 @@ router.delete('/:id/following', getUser, async (req, res) => {
   try {
     if(res.user.following.indexOf(req.body.followedId) !== - 1){
       res.user.following = res.user.following.filter((id) => id !== req.body.followedId)
-      res.user.save()
-      res.json('followed deleted from user successfully')
+      const user = await res.user.save()
+      res.json({ message: 'followed deleted from user successfully', user })
     } else {
-      res.status(404).json('followed does not exist in user')
+      res.status(404).json({ message: "followed does not exist in user" });
     }
   } catch (error) {
     res.status(500).json({ message: error.message})
@@ -122,8 +125,11 @@ router.post('/:id/collections', getUser, async (req, res) => {
   try {
     if(res.user.collectionsIds.indexOf(req.body.collectionId) === - 1){
       res.user.collectionsIds.push(req.body.collectionId)
-      res.user.save()
-      res.status(201).json('collection added to user successfully')
+      const user = await res.user.save()
+      res.status(201).json({
+        message: "collection added to user successfully",
+        user,
+      });
     } else {
       res.status(409).json('collection already exists for this user')
     }
@@ -137,8 +143,11 @@ router.delete('/:id/collections', getUser, async (req, res) => {
   try {
     if(res.user.collectionsIds.indexOf(req.body.collectionId) !== - 1){
       res.user.collectionsIds = res.user.collectionsIds.filter((id) => id !== req.body.collectionId)
-      res.user.save()
-      res.json('collection deleted from user successfully')
+      const user = await res.user.save()
+      res.json({
+        message: "collection deleted from user successfully",
+        user,
+      });
     } else {
       res.status(404).json('collection does not exist in user')
     }
