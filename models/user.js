@@ -7,13 +7,12 @@ const userSchema = new mongoose.Schema({
   },
   following: {
     type: Array,
-    required: false
-  },
-  date: {
-    type: Date,
     required: true,
-    default: Date.now
+  },
+  collectionsIds: {
+    type: Array,
+    required: true
   }
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('User', userSchema)
