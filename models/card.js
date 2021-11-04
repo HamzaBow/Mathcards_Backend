@@ -16,12 +16,7 @@ const cardSchema = new mongoose.Schema({
   tags: {
     type: Array,
     required: true
-  },
-  date: {
-    type: Date,
-    required: true,
-    default: Date.now
   }
-})
+}, { timestamps: true })
 
 module.exports = mongoose.model('Card', cardSchema)
