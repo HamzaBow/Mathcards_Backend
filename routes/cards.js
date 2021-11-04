@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
   }
 }) 
 
-// Updating one with PUT
+// Updating One
 router.put('/:id', getCard, async (req, res) => {
   res.card.front = req.body.front
   res.card.back = req.body.back
