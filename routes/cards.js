@@ -20,6 +20,7 @@ router.get('/:id', getCard, (req, res) => {
 // Creating One
 router.post('/', async (req, res) => {
   const card = new Card({
+    ownerId           : req.body.ownerId,
     front             : req.body.front,
     back              : req.body.back,
     difficultyLevels  : req.body.difficultyLevels,
@@ -35,6 +36,7 @@ router.post('/', async (req, res) => {
 
 // Updating One
 router.put('/:id', getCard, async (req, res) => {
+  res.card.ownerid          = req.body.ownerid
   res.card.front            = req.body.front
   res.card.back             = req.body.back
   res.card.difficultyLevels = req.body.difficultyLevels
@@ -49,6 +51,9 @@ router.put('/:id', getCard, async (req, res) => {
 
 // Updating one with PATCH
 router.patch('/:id', getCard, async (req, res) => {
+  if (req.body.ownerId != null) {
+    res.card.ownerId = req.body.ownerId
+  }
   if (req.body.front != null) {
     res.card.front = req.body.front
   }

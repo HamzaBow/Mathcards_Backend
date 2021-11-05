@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const cardSchema = new mongoose.Schema({
+  ownerId: {
+    type: 'string',
+    required: true
+  },
   front: {
     type: Array,
     required: true
