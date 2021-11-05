@@ -20,10 +20,10 @@ router.get('/:id', getCard, (req, res) => {
 // Creating One
 router.post('/', async (req, res) => {
   const card = new Card({
-    front: req.body.front,
-    back: req.body.back,
-    difficultyLevels: req.body.difficultyLevels,
-    tags: req.body.tags,
+    front             : req.body.front,
+    back              : req.body.back,
+    difficultyLevels  : req.body.difficultyLevels,
+    tags              : req.body.tags,
   })
   try {
     const newCard = await card.save()
@@ -35,10 +35,10 @@ router.post('/', async (req, res) => {
 
 // Updating One
 router.put('/:id', getCard, async (req, res) => {
-  res.card.front = req.body.front
-  res.card.back = req.body.back
+  res.card.front            = req.body.front
+  res.card.back             = req.body.back
   res.card.difficultyLevels = req.body.difficultyLevels
-  res.card.tags = req.body.tags
+  res.card.tags             = req.body.tags
   try {
     const updatedCard = await res.card.save()
     res.json(updatedCard)
