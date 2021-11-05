@@ -39,9 +39,9 @@ router.post("/", async (req, res) => {
 
 // Updating One
 router.patch("/:id", getUser, async (req, res) => {
-  res.user.name = req.body.name
-  res.user.following = req.body.following
-  res.user.collectionsIds = req.body.collectionsIds
+  res.user.uid = req.body.uid;
+  res.user.following = req.body.following;
+  res.user.collectionsIds = req.body.collectionsIds;
   try {
     const updatedUser = await res.user.save()
     res.json(updatedUser)
@@ -51,9 +51,9 @@ router.patch("/:id", getUser, async (req, res) => {
 });
 
 // Updating one with PATCH
-router.patch('/:id', getUser, async (req, res) => {
-  if (req.body.name != null) {
-    res.user.name = req.body.name
+router.patch("/:id", getUser, async (req, res) => {
+  if (req.body.uid != null) {
+    res.user.uid = req.body.uid;
   }
   if (req.body.following != null) {
     res.user.following = req.body.following
