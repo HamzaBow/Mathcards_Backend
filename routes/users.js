@@ -38,7 +38,7 @@ router.post("/", async (req, res) => {
 });
 
 // Updating One
-router.patch("/:id", getUser, async (req, res) => {
+router.put("/:id", getUser, async (req, res) => {
   res.user.uid = req.body.uid;
   res.user.following = req.body.following;
   res.user.collectionsIds = req.body.collectionsIds;
