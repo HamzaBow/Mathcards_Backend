@@ -9,10 +9,6 @@ const userSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  collectionsIds: {
-    type: Array,
-    required: true
-  }
 }, { timestamps: true })
 
 module.exports = mongoose.model('User', userSchema)
