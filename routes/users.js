@@ -20,12 +20,12 @@ router.get("/:id", getUser, async (req, res) => {
 // Creating One
 router.post("/", async (req, res) => {
   try {
-    const existingUser = await User.findOne({ uid: req.body.uid });
+    const existingUser = await User.findOne({ authId: req.body.authId });
     if (existingUser) {
       res.status(409).json({ message: "User already exists" });
     } else {
       const user = new User({
-        uid             : req.body.uid,
+        authId             : req.body.authId,
         following       : req.body.following,
         collectionsIds  : req.body.collectionsIds,
       });
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 
 // Updating One
 router.put("/:id", getUser, async (req, res) => {
-  res.user.uid = req.body.uid;
+  res.user.authId = req.body.authId;
   res.user.following = req.body.following;
   res.user.collectionsIds = req.body.collectionsIds;
   try {
@@ -52,8 +52,8 @@ router.put("/:id", getUser, async (req, res) => {
 
 // Updating one with PATCH
 router.patch("/:id", getUser, async (req, res) => {
-  if (req.body.uid != null) {
-    res.user.uid = req.body.uid;
+  if (req.body.authId != null) {
+    res.user.authId = req.body.authId;
   }
   if (req.body.following != null) {
     res.user.following = req.body.following;
@@ -83,6 +83,12 @@ router.delete("/:id", getUser, async (req, res) => {
 //***********************************************************
 //**********************   FOLLOWING   **********************
 //***********************************************************
+
+
+
+// GET user's followings
+
+
 
 router.post("/:id/following", getUser, async (req, res) => {
   try {
