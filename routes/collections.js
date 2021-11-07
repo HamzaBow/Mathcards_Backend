@@ -6,8 +6,15 @@ const Collection = require('../models/collection')
 // Getting All
 router.get('/', async (req, res) => {
   try {
-    const collections = await Collection.find();
+    const userId = req.query.userid
+    let collections
+    if( typeof userId == "undefined" ){
+      collections = await Collection.find();
+    } else {
+      collections = await Collection.find({ ownerId: req.query.userid });
+    }
     res.json(collections)
+    // res.json({ "userid": typeof req.query.userid })
   } catch (error) {
     res.status(500).json({ error: error})
   }
