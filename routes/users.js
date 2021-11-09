@@ -2,10 +2,17 @@ const express = require("express");
 const router = express.Router();
 const User = require("../models/user");
 
-// Getting All
+// Getting All or getting one from authId if
+// authId parameter is provided in query string
 router.get("/", async (req, res) => {
   try {
-    const users = await User.find();
+    const authId = req.query.authId
+    let user
+    if( typeof authId == "undefined" ){
+      const users = await User.find();
+    } else {
+      user = await User.find({ authId: req.query.authId });
+    }
     res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
