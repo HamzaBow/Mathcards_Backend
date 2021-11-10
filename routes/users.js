@@ -10,10 +10,11 @@ router.get("/", async (req, res) => {
     let user
     if( typeof authId == "undefined" ){
       const users = await User.find();
+      res.json(users);
     } else {
-      user = await User.find({ authId: req.query.authId });
+      user = await User.findOne({ authId: req.query.authId });
+      res.json(user)
     }
-    res.json(users);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
