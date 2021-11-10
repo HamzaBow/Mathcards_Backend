@@ -5,8 +5,16 @@ const Card = require("../models/card");
 // Getting All
 router.get("/", async (req, res) => {
   try {
-    const cards = await Card.find();
+    const cardsIds = req.query.cardsids
+    let cards
+    if (typeof cardsIds == "undefined"){
+      cards = await Card.find();
+    } else {
+      const ids = cardsIds.split(",");
+      cards = await Card.find({'_id': { $in: ids}})
+    }
     res.json(cards);
+
   } catch (error) {
     res.status(500).json({ error: error });
   }
