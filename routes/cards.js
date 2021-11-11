@@ -8,12 +8,6 @@ router.get("/", async (req, res) => {
   try {
     const cardsIds = req.query.cardsids
     const userId = req.query.userid
-
-    console.log('cardsIds:', cardsIds)
-    console.log('typeof cardsIds:', typeof cardsIds)
-    console.log('userId:', userId)
-    console.log('typeof userId:', typeof userId)
-
     let cards
     if (typeof cardsIds == "undefined"){
       if (typeof userId == "undefined"){
