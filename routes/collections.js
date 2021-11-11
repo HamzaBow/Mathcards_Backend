@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     res.json(collections)
     // res.json({ "userid": typeof req.query.userid })
   } catch (error) {
-    res.status(500).json({ error: error})
+    res.status(500).json({ message: error.message})
   }
 }) 
 
