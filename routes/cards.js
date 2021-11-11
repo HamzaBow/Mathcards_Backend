@@ -1,3 +1,4 @@
+const { json } = require("express");
 const express = require("express");
 const router = express.Router();
 const Card = require("../models/card");
@@ -7,6 +8,12 @@ router.get("/", async (req, res) => {
   try {
     const cardsIds = req.query.cardsids
     const userId = req.query.userid
+
+    console.log('cardsIds:', cardsIds)
+    console.log('typeof cardsIds:', typeof cardsIds)
+    console.log('userId:', userId)
+    console.log('typeof userId:', typeof userId)
+
     let cards
     if (typeof cardsIds == "undefined"){
       if (typeof userId == "undefined"){
@@ -18,9 +25,14 @@ router.get("/", async (req, res) => {
       if (typeof userId != "undefined"){
         throw new Error("CardsIds and userId cannot be both specifined")
         // TODO: send the intersection.
+      } else {
+        if (cardsIds === "") {
+          cards = []
+        } else {
+          const ids = cardsIds.split(",");
+          cards = await Card.find({'_id': { $in: ids}})
+        }
       }
-      const ids = cardsIds.split(",");
-      cards = await Card.find({'_id': { $in: ids}})
     }
     // if both cards
     res.json(cards);
