@@ -31,6 +31,9 @@ app.use('/users', usersRouter)
 
 const collectionsRouter = require('./routes/collections')
 app.use('/collections', collectionsRouter)
+
+const tagsRouter = require('./routes/tags')
+app.use('/tags', tagsRouter)
 // ***********************************************
 
 app.listen(3001,  () => console.log('Server Started'))
