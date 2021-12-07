@@ -7,6 +7,7 @@ router.get("/", async (req, res) => {
   try {
     const cardsIds = req.query.cardsids
     const userId = req.query.userid
+    const searchQuery = req.query.q || req.query.query
     let cards
     if (!cardsIds && !userId){
       cards = await Card.find();
@@ -24,6 +25,10 @@ router.get("/", async (req, res) => {
     }
     if (cardsIds === "" || userId === ""){
       cards = []
+    }
+    if (searchQuery) {
+      console.log('searchQuery', searchQuery)
+      cards = await Card.find({ "$text": { "$search": searchQuery } });
     }
     res.json(cards);
 
