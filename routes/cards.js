@@ -8,26 +8,23 @@ router.get("/", async (req, res) => {
     const cardsIds = req.query.cardsids
     const userId = req.query.userid
     let cards
-    if (typeof cardsIds == "undefined"){
-      if (typeof userId == "undefined"){
-        cards = await Card.find();
-      } else {
-        cards = await Card.find({ ownerId: req.query.userid });
-      }
-    } else {
-      if (typeof userId != "undefined"){
+    if (!cardsIds && !userId){
+      cards = await Card.find();
+    }
+    if (!cardsIds && userId){
+      cards = await Card.find({ ownerId: req.query.userid });
+    }
+    if (cardsIds && !userId){
+      const ids = cardsIds.split(",");
+      cards = await Card.find({'_id': { $in: ids}})
+    }
+    if (cardsIds && userId){
         throw new Error("CardsIds and userId cannot be both specifined")
         // TODO: send the intersection.
-      } else {
-        if (cardsIds === "") {
-          cards = []
-        } else {
-          const ids = cardsIds.split(",");
-          cards = await Card.find({'_id': { $in: ids}})
-        }
-      }
     }
-    // if both cards
+    if (cardsIds === "" || userId === ""){
+      cards = []
+    }
     res.json(cards);
 
   } catch (error) {
