@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const express = require('express')
+const serverless = require("serverless-http")
 const app = express()
 const cors = require('cors')
 app.use(
@@ -24,18 +25,22 @@ app.get('/', (req, res) => {
 })
 
 // ******************* Routers *******************
-const cardsRouter = require('./routes/cards', )
-app.use('/cards', cardsRouter)
-
-const usersRouter = require('./routes/users')
-app.use('/users', usersRouter)
-
+const cardsRouter       = require('./routes/cards')
+const usersRouter       = require('./routes/users')
 const collectionsRouter = require('./routes/collections')
-app.use('/collections', collectionsRouter)
+const tagsRouter        = require('./routes/tags')
+// ****************** Serverless *****************
 
-const tagsRouter = require('./routes/tags')
-app.use('/tags', tagsRouter)
+app.use('/.netlify/functions/server/cards',       cardsRouter)
+app.use('/.netlify/functions/server/users',       usersRouter)
+app.use('/.netlify/functions/server/collections', collectionsRouter)
+app.use('/.netlify/functions/server/tags',        tagsRouter)
+// **************** Not Serverless ***************
+// app.use('/cards',       cardsRouter)
+// app.use('/users',       usersRouter)
+// app.use('/collections', collectionsRouter)
+// app.use('/tags',        tagsRouter)
 // ***********************************************
 
-app.listen(3001,  () => console.log('Server Started'))
-
+module.exports = app;
+module.exports.handler = serverless(app);
