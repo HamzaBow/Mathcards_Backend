@@ -8,7 +8,8 @@ app.use(
   cors({
     // origin: 'http://localhost:3000'
     // origin: 'https://clever-agnesi-cbde7c.netlify.app'
-    origin: '*'
+    origin: '*',
+    "methods": "GET,HEAD,PUT,PATCH,POST,DELETE"
   })
 )
 const mongoose = require('mongoose');
