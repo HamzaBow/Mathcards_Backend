@@ -7,7 +7,8 @@ const cors = require('cors')
 app.use(
   cors({
     // origin: 'http://localhost:3000'
-    origin: 'https://clever-agnesi-cbde7c.netlify.app'
+    // origin: 'https://clever-agnesi-cbde7c.netlify.app'
+    origin: '*'
   })
 )
 const mongoose = require('mongoose');
