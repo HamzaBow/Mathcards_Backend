@@ -14,8 +14,8 @@ app.use(
 )
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.MONGODB_URI)
-// mongoose.connect(process.env.DATABASE_URL)
+// mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.DATABASE_URL)
 const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log('Connected to Database'))
@@ -44,6 +44,7 @@ app.use('/.netlify/functions/server/tags',        tagsRouter)
 // app.use('/collections', collectionsRouter)
 // app.use('/tags',        tagsRouter)
 // ***********************************************
+// app.listen(3001,  () => console.log('Server Started'))
 
 module.exports = app;
 module.exports.handler = serverless(app);
