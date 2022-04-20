@@ -23,4 +23,6 @@ const cardSchema = new mongoose.Schema({
   }
 }, { timestamps: true })
 
+cardSchema.index({ "front.htmlContent": "text", "front.latex": "text", "back.htmlContent": "text", "back.latex": "text", "tags": "text" })
+
 module.exports = mongoose.model('Card', cardSchema)
