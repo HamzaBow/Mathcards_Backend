@@ -97,7 +97,7 @@ router.delete("/:id", getUser, requireAuthorization, async (req, res) => {
 
 
 
-router.post("/:id/following", getUser, async (req, res) => {
+router.post("/:id/following", getUser, requireAuthorization, async (req, res) => {
   try {
     if (res.user.following.indexOf(req.body.followedId) === -1) {
       res.user.following.push(req.body.followedId);
@@ -113,7 +113,7 @@ router.post("/:id/following", getUser, async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 });
-
+ 
 // Deleting one followed user
 router.delete("/:id/following", getUser, async (req, res) => {
   try {
