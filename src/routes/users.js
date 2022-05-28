@@ -45,7 +45,6 @@ async function requireFirebaseAccount(req, res, next) {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-  console.log("USER HAS FIREBASE ACCOUNT")
   next()
 }
 
@@ -69,7 +68,7 @@ router.post("/", requireFirebaseAccount, async (req, res) => {
 });
 
 // Updating One
-router.put("/:id", getUser, async (req, res) => {
+router.put("/:id", getUser, requireAuthorization, async (req, res) => {
   res.user.authId = req.body.authId;
   res.user.following = req.body.following;
   try {
@@ -81,7 +80,7 @@ router.put("/:id", getUser, async (req, res) => {
 });
 
 // Updating one with PATCH
-router.patch("/:id", getUser, async (req, res) => {
+router.patch("/:id", getUser, requireAuthorization, async (req, res) => {
   if (req.body.authId != null) {
     res.user.authId = req.body.authId;
   }
@@ -168,5 +167,30 @@ async function getUser(req, res, next) {
   res.user = user;
   next();
 }
+
+// this middleware has to be passed after getUser middleware
+// because this one uses "res.user" set by getUser
+async function requireAuthorization(req, res, next) {
+  try {
+    const decodedToken = await auth.verifyIdToken(req.body.idToken)
+    const authIdFromToken =  decodedToken?.user_id;
+    console.log('typeof authIdFromToken === "undefined" :>> ',       typeof authIdFromToken === "undefined");
+    console.log('res.user.authId !== authIdFromToken :>> ',       res.user.authId !== authIdFromToken);
+    console.log("res.user._id :>>", res.user._id.toString(), 'req.params.id :>> ', req.params.id);
+    if (
+      (typeof authIdFromToken === "undefined") ||
+      (res.user.authId !== authIdFromToken) ||
+      (res.user._id.toString() !== req.params.id)
+    ) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  next()
+}
+
 
 module.exports = router;
