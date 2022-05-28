@@ -114,7 +114,7 @@ router.post("/:id/following", getUser, async (req, res) => {
   }
 });
 
-// Deleting one follower
+// Deleting one followed user
 router.delete("/:id/following", getUser, async (req, res) => {
   try {
     if (res.user.following.indexOf(req.body.followedId) !== -1) {
