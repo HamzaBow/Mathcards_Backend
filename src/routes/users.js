@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("../services/firebase");
 const router = express.Router();
 const User = require("../models/user");
 
@@ -28,8 +29,28 @@ router.get("/:id", getUser, async (req, res) => {
   res.json(res.user);
 });
 
+//MIDDLEWARE
+async function requireFirebaseAccount(req, res, next) {
+  try {
+    const decodedToken = await auth.verifyIdToken(req.body.idToken)
+    const authIdFromToken =  decodedToken?.user_id;
+    if (
+      (typeof authIdFromToken === "undefined") ||
+      (authIdFromToken !== req.body.authId)
+    ) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  console.log("USER HAS FIREBASE ACCOUNT")
+  next()
+}
+
 // Creating One
-router.post("/", async (req, res) => {
+router.post("/", requireFirebaseAccount, async (req, res) => {
   try {
     const existingUser = await User.findOne({ authId: req.body.authId });
     if (existingUser) {
