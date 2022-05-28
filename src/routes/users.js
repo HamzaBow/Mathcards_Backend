@@ -29,24 +29,6 @@ router.get("/:id", getUser, async (req, res) => {
   res.json(res.user);
 });
 
-//MIDDLEWARE
-async function requireFirebaseAccount(req, res, next) {
-  try {
-    const decodedToken = await auth.verifyIdToken(req.body.idToken)
-    const authIdFromToken =  decodedToken?.user_id;
-    if (
-      (typeof authIdFromToken === "undefined") ||
-      (authIdFromToken !== req.body.authId)
-    ) {
-      return res
-        .status(401)
-        .json({ message: "You are not authorized to execute this operation!" });
-    }
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-  next()
-}
 
 // Creating One
 router.post("/", requireFirebaseAccount, async (req, res) => {
@@ -181,6 +163,24 @@ async function requireAuthorization(req, res, next) {
       (typeof authIdFromToken === "undefined") ||
       (res.user.authId !== authIdFromToken) ||
       (res.user._id.toString() !== req.params.id)
+    ) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  next()
+}
+
+async function requireFirebaseAccount(req, res, next) {
+  try {
+    const decodedToken = await auth.verifyIdToken(req.body.idToken)
+    const authIdFromToken =  decodedToken?.user_id;
+    if (
+      (typeof authIdFromToken === "undefined") ||
+      (authIdFromToken !== req.body.authId)
     ) {
       return res
         .status(401)
