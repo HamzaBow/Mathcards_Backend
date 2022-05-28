@@ -1,6 +1,6 @@
 
-const { initializeApp } = require('firebase-admin/app');
-import { getAuth } from "firebase-admin/auth"
+const { initializeApp } = require("firebase-admin/lib/app");
+const { getAuth } = require("firebase-admin/lib/auth");
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -11,6 +11,6 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID
 };
 
-initializeApp(firebaseConfig);
-
-export const auth = getAuth()
+const firebaseApp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+module.exports = auth;
