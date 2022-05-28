@@ -115,7 +115,7 @@ router.post("/:id/following", getUser, requireAuthorization, async (req, res) =>
 });
  
 // Deleting one followed user
-router.delete("/:id/following", getUser, async (req, res) => {
+router.delete("/:id/following", getUser, requireAuthorization, async (req, res) => {
   try {
     if (res.user.following.indexOf(req.body.followedId) !== -1) {
       res.user.following = res.user.following.filter(
