@@ -78,7 +78,7 @@ router.patch("/:id", getUser, requireAuthorization, async (req, res) => {
 });
 
 // Deleting One
-router.delete("/:id", getUser, async (req, res) => {
+router.delete("/:id", getUser, requireAuthorization, async (req, res) => {
   try {
     await res.user.remove();
     res.json({ message: "Deleted user" });
