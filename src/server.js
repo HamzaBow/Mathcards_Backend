@@ -6,8 +6,6 @@ const app = express()
 const cors = require('cors')
 app.use(
   cors({
-    // origin: 'http://localhost:3000'
-    // origin: 'https://clever-agnesi-cbde7c.netlify.app'
     origin: process.env.CORS_ORIGIN,
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE"
   })
