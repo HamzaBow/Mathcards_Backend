@@ -27,7 +27,6 @@ router.get("/", async (req, res) => {
       cards = []
     }
     if (searchQuery) {
-      console.log('searchQuery', searchQuery)
       cards = await Card.find({ "$text": { "$search": searchQuery } });
     }
     res.json(cards);
