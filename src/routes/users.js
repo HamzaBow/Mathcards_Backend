@@ -154,7 +154,7 @@ async function getUser(req, res, next) {
 // because this one uses "res.user" which is  set by getUser middleware.
 async function requireUserAuthorization(req, res, next) {
   try {
-    const decodedToken = await auth.verifyIdToken(req.body.idToken)
+    const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
     const authIdFromToken =  decodedToken?.user_id;
     if (
       (typeof authIdFromToken === "undefined") ||
@@ -173,7 +173,7 @@ async function requireUserAuthorization(req, res, next) {
 
 async function requireFirebaseAccount(req, res, next) {
   try {
-    const decodedToken = await auth.verifyIdToken(req.body.idToken)
+    const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
     const authIdFromToken =  decodedToken?.user_id;
     if (
       (typeof authIdFromToken === "undefined") ||
