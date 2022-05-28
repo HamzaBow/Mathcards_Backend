@@ -50,7 +50,7 @@ router.post("/", requireFirebaseAccount, async (req, res) => {
 });
 
 // Updating One
-router.put("/:id", getUser, requireAuthorization, async (req, res) => {
+router.put("/:id", getUser, requireUserAuthorization, async (req, res) => {
   res.user.authId = req.body.authId;
   res.user.following = req.body.following;
   try {
@@ -62,7 +62,7 @@ router.put("/:id", getUser, requireAuthorization, async (req, res) => {
 });
 
 // Updating one with PATCH
-router.patch("/:id", getUser, requireAuthorization, async (req, res) => {
+router.patch("/:id", getUser, requireUserAuthorization, async (req, res) => {
   if (req.body.authId != null) {
     res.user.authId = req.body.authId;
   }
@@ -78,7 +78,7 @@ router.patch("/:id", getUser, requireAuthorization, async (req, res) => {
 });
 
 // Deleting One
-router.delete("/:id", getUser, requireAuthorization, async (req, res) => {
+router.delete("/:id", getUser, requireUserAuthorization, async (req, res) => {
   try {
     await res.user.remove();
     res.json({ message: "Deleted user" });
@@ -97,7 +97,7 @@ router.delete("/:id", getUser, requireAuthorization, async (req, res) => {
 
 
 
-router.post("/:id/following", getUser, requireAuthorization, async (req, res) => {
+router.post("/:id/following", getUser, requireUserAuthorization, async (req, res) => {
   try {
     if (res.user.following.indexOf(req.body.followedId) === -1) {
       res.user.following.push(req.body.followedId);
@@ -115,7 +115,7 @@ router.post("/:id/following", getUser, requireAuthorization, async (req, res) =>
 });
  
 // Deleting one followed user
-router.delete("/:id/following", getUser, requireAuthorization, async (req, res) => {
+router.delete("/:id/following", getUser, requireUserAuthorization, async (req, res) => {
   try {
     if (res.user.following.indexOf(req.body.followedId) !== -1) {
       res.user.following = res.user.following.filter(
@@ -152,7 +152,7 @@ async function getUser(req, res, next) {
 
 // this middleware has to be passed after getUser middleware
 // because this one uses "res.user" which is  set by getUser middleware.
-async function requireAuthorization(req, res, next) {
+async function requireUserAuthorization(req, res, next) {
   try {
     const decodedToken = await auth.verifyIdToken(req.body.idToken)
     const authIdFromToken =  decodedToken?.user_id;
