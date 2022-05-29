@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
       res.json(users);
     } else {
       user = await User.findOne({ authId: req.query.authId });
-      if (user == null) {
+      if (user === null) {
         return res.status(404).json({ message: "Cannot find user" });
       }
       return res.json(user)

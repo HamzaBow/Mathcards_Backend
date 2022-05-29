@@ -113,7 +113,7 @@ async function getCard(req, res, next) {
   let card;
   try {
     card = await Card.findById(req.params.id);
-    if (card == null) {
+    if (card === null) {
       return res.status(404).json({ message: "Cannot find card" });
     }
   } catch (error) {
