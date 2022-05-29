@@ -18,12 +18,12 @@ router.get('/', async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message})
   }
-}) 
+})
 
 // Getting One
 router.get('/:id', getCollection, (req, res) => {
   res.json(res.collection)
-}) 
+})
 
 // Creating One
 router.post('/', async (req, res) => {
@@ -39,7 +39,7 @@ router.post('/', async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message })
   }
-}) 
+})
 
 // Updating One
 router.put('/:id', getCollection, async (req, res) => {
@@ -76,7 +76,7 @@ router.patch('/:id', getCollection, async (req, res) => {
   } catch (error) {
     res.status(400).json({ message: error.message})
   }
-}) 
+})
 
 // Deleting One
 router.delete('/:id', getCollection, async (req, res) => {
@@ -86,7 +86,7 @@ router.delete('/:id', getCollection, async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message})
   }
-}) 
+})
 
 //***********************************************************
 //***************   CARDS INSIDE COLLECTION   ***************
