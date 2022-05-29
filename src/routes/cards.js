@@ -61,7 +61,7 @@ router.post("/", authorizeCreateCard, async (req, res) => {
 });
 
 // Updating One
-router.put("/:id", getCard, async (req, res) => {
+router.put("/:id", getCard, authorizeModifyCard, async (req, res) => {
   res.card.ownerid          = req.body.ownerid;
   res.card.front            = req.body.front;
   res.card.back             = req.body.back;
