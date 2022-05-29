@@ -1,6 +1,8 @@
 const express = require("express");
+const auth = require("../services/firebase");
 const router = express.Router();
 const Card = require("../models/card");
+const User = require("../models/user");
 
 // Getting All
 router.get("/", async (req, res) => {
@@ -42,7 +44,7 @@ router.get("/:id", getCard, (req, res) => {
 });
 
 // Creating One
-router.post("/", async (req, res) => {
+router.post("/", authorizeCreateCard, async (req, res) => {
   const card = new Card({
     ownerId           : req.body.ownerId,
     front             : req.body.front,
@@ -109,6 +111,10 @@ router.delete("/:id", getCard, async (req, res) => {
   }
 });
 
+//***********************************************************
+//**********************   MIDDLEWARE   *********************
+//***********************************************************
+
 async function getCard(req, res, next) {
   let card;
   try {
@@ -123,5 +129,52 @@ async function getCard(req, res, next) {
   res.card = card;
   next();
 }
+
+// this middleware has to be passed after getCard middleware
+// because this one uses "res.card" which is  set by getCard middleware.
+async function authorizeCreateCard(req, res, next) {
+  try {
+    const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
+    const authIdFromToken =  decodedToken?.user_id;
+    const user = await User.findOne({ authId: authIdFromToken });
+    if (user === null) {
+      return res.status(404).json({ message: "Cannot find user" });
+    }
+    if (typeof authIdFromToken === "undefined"){
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  next()
+}
+
+// this middleware has to be passed after getCard middleware
+// because this one uses "res.card" which is  set by getCard middleware.
+async function authorizeModifyCard(req, res, next) {
+
+  try {
+    const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
+    const authIdFromToken =  decodedToken?.user_id;
+    const user = await User.findOne({ authId: authIdFromToken });
+    if (user === null) {
+      return res.status(404).json({ message: "Cannot find user" });
+    }
+    if (
+      (typeof authIdFromToken === "undefined") ||
+      (res.card.ownerId !== user._id.toString())
+    ) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  next()
+}
+
 
 module.exports = router;
