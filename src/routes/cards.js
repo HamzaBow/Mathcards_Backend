@@ -76,7 +76,7 @@ router.put("/:id", getCard, authorizeModifyCard, async (req, res) => {
 });
 
 // Updating one with PATCH
-router.patch("/:id", getCard, async (req, res) => {
+router.patch("/:id", getCard, authorizeModifyCard, async (req, res) => {
   if (req.body.ownerId != null) {
     res.card.ownerId = req.body.ownerId;
   }
