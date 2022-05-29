@@ -102,7 +102,7 @@ router.patch("/:id", getCard, authorizeModifyCard, async (req, res) => {
 });
 
 // Deleting One
-router.delete("/:id", getCard, async (req, res) => {
+router.delete("/:id", getCard, authorizeModifyCard, async (req, res) => {
   try {
     await res.card.remove();
     res.json({ message: "Deleted card" });
