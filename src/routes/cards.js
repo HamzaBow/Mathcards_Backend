@@ -130,8 +130,6 @@ async function getCard(req, res, next) {
   next();
 }
 
-// this middleware has to be passed after getCard middleware
-// because this one uses "res.card" which is  set by getCard middleware.
 async function authorizeCreateCard(req, res, next) {
   try {
     const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
