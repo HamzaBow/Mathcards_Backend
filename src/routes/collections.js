@@ -44,7 +44,7 @@ router.post('/', authorizeCreateCollection, async (req, res) => {
 })
 
 // Updating One
-router.put('/:id', getCollection, async (req, res) => {
+router.put('/:id', getCollection, authorizeModifyCollection, async (req, res) => {
   res.collection.title = req.body.title
   res.collection.ownerId = req.body.ownerId
   res.collection.cardsIds = req.body.cardsIds
@@ -58,7 +58,7 @@ router.put('/:id', getCollection, async (req, res) => {
 })
 
 // Updating one with PATCH
-router.patch('/:id', getCollection, async (req, res) => {
+router.patch('/:id', getCollection, authorizeModifyCollection, async (req, res) => {
   if (req.body.title != null) {
     res.collection.title = req.body.title
   }
@@ -81,7 +81,7 @@ router.patch('/:id', getCollection, async (req, res) => {
 })
 
 // Deleting One
-router.delete('/:id', getCollection, async (req, res) => {
+router.delete('/:id', getCollection, authorizeModifyCollection, async (req, res) => {
   try {
     await res.collection.remove()
     res.json({ message: 'Deleted collection'})
