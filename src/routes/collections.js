@@ -28,7 +28,7 @@ router.get('/:id', getCollection, (req, res) => {
 })
 
 // Creating One
-router.post('/', async (req, res) => {
+router.post('/', authorizeCreateCollection, async (req, res) => {
   const collection = new Collection({
     title: req.body.title,
     ownerId: req.body.ownerId,
