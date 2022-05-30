@@ -1,6 +1,8 @@
 const express = require('express');
+const auth = require("../services/firebase");
 const router = express.Router()
 const Collection = require('../models/collection')
+const User = require("../models/user");
 // const Card = require('../models/card')
 
 // Getting All
@@ -140,6 +142,50 @@ async function getCollection(req, res, next) {
   }
 
   res.collection = collection
+  next()
+}
+
+async function authorizeCreateCollection(req, res, next) {
+  try {
+    const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
+    const authIdFromToken =  decodedToken?.user_id;
+    const user = await User.findOne({ authId: authIdFromToken });
+    if (user === null) {
+      return res.status(404).json({ message: "Cannot find user" });
+    }
+    if (typeof authIdFromToken === "undefined"){
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+  next()
+}
+
+// this middleware has to be passed after getCollection middleware
+// because this one uses "res.collection" which is  set by
+// getCollection middleware.
+async function authorizeModifyCollection(req, res, next) {
+  try {
+    const decodedToken = await auth.verifyIdToken(req.headers.authorization?.split(" ")?.[1])
+    const authIdFromToken =  decodedToken?.user_id;
+    const user = await User.findOne({ authId: authIdFromToken });
+    if (user === null) {
+      return res.status(404).json({ message: "Cannot find user" });
+    }
+    if (
+      (typeof authIdFromToken === "undefined") ||
+      (res.collection.ownerId !== user._id.toString())
+    ) {
+      return res
+        .status(401)
+        .json({ message: "You are not authorized to execute this operation!" });
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
   next()
 }
 
