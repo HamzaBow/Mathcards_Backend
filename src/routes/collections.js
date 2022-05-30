@@ -94,7 +94,7 @@ router.delete('/:id', getCollection, authorizeModifyCollection, async (req, res)
 //***************   CARDS INSIDE COLLECTION   ***************
 //***********************************************************
 // Adding one card to a specific collection.
-router.post('/:id/cards', getCollection, async (req, res) => {
+router.post('/:id/cards', getCollection, authorizeModifyCollection, async (req, res) => {
   try {
     if(res.collection.cardsIds.indexOf(req.body.cardId) === - 1){
       res.collection.cardsIds.push(req.body.cardId)
@@ -109,7 +109,7 @@ router.post('/:id/cards', getCollection, async (req, res) => {
 })
 
 // Deleting one card from a specific collection.
-router.delete('/:id/cards', getCollection, async (req, res) => {
+router.delete('/:id/cards', getCollection, authorizeModifyCollection, async (req, res) => {
   try {
     if(res.collection.cardsIds.indexOf(req.body.cardId) !== - 1){
       res.collection.cardsIds = res.collection.cardsIds.filter((id) => id !== req.body.cardId)
