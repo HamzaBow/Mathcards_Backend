@@ -30,12 +30,14 @@ const cardsRouter       = require('./routes/cards')
 const usersRouter       = require('./routes/users')
 const collectionsRouter = require('./routes/collections')
 const tagsRouter        = require('./routes/tags')
+const miscRouter        = require('./routes/misc')
 // ****************** Serverless *****************
 
 app.use('/.netlify/functions/server/cards',       cardsRouter)
 app.use('/.netlify/functions/server/users',       usersRouter)
 app.use('/.netlify/functions/server/collections', collectionsRouter)
 app.use('/.netlify/functions/server/tags',        tagsRouter)
+app.use('/.netlify/functions/server',             miscRouter)
 // **************** Not Serverless ***************
 // app.use('/cards',       cardsRouter)
 // app.use('/users',       usersRouter)
